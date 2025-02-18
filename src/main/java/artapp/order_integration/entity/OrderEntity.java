@@ -1,5 +1,6 @@
 package artapp.order_integration.entity;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,7 +10,8 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Document(collection = "orders" )
+@Document(collection = "orders")
+@TypeAlias("orderEntity")
 public class OrderEntity {
 
     @MongoId
