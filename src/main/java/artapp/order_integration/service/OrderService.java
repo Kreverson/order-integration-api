@@ -5,20 +5,43 @@ import artapp.order_integration.entity.OrderEntity;
 import artapp.order_integration.entity.OrderItem;
 import artapp.order_integration.listener.dto.OrderCreatedEvent;
 import artapp.order_integration.repository.OrderRepository;
+import org.bson.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final MongoTemplate mongoTemplate;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, MongoTemplate mongoTemplate) {
         this.orderRepository = orderRepository;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    public BigDecimal findTotalOnOrdersByCustomer(Long customerId) {
+        var aggregations = newAggregation(
+                match(Criteria.where("customerId").is(customerId)),
+                group().sum("total").as("total")
+        );
+
+        Document response;
+        response = mongoTemplate.aggregate(aggregations, "orders", Document.class).getUniqueMappedResult();
+
+        if(response == null)
+            return new BigDecimal(BigInteger.ZERO);
+
+        return new BigDecimal(response.get("total").toString());
     }
 
     public Page<OrderResponse> findAllByCustomerId(Long customerId, PageRequest pageRequest) {
