@@ -1,5 +1,6 @@
 package artapp.order_integration.service;
 
+import artapp.order_integration.controller.dto.OrderResponse;
 import artapp.order_integration.entity.OrderEntity;
 import artapp.order_integration.entity.OrderItem;
 import artapp.order_integration.listener.dto.OrderCreatedEvent;
@@ -18,6 +19,11 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
+    public List<OrderResponse> findAllByCustomerId(Long customerId) {
+        var orders = orderRepository.findAllByCustomerId(customerId);
+
+        return orders.stream().map(OrderResponse::fromEntity).toList();
+    }
     public void save(OrderCreatedEvent event) {
         OrderEntity entity = new OrderEntity();
 
