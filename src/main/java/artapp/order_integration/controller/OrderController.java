@@ -2,6 +2,8 @@ package artapp.order_integration.controller;
 
 import artapp.order_integration.controller.dto.OrderResponse;
 import artapp.order_integration.service.OrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +27,10 @@ public class OrderController {
     }
 
     @GetMapping("/customer/{customerId}/orders")
-    public ResponseEntity<List<OrderResponse>> getAllOrderByCustomer(@PathVariable("customerId") Long customerId){
-        return ResponseEntity.ok(orderService.findAllByCustomerId(customerId));
+    public ResponseEntity<Page<OrderResponse>> getAllOrderByCustomer(@PathVariable("customerId") Long customerId,
+                                                                     @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+
+        return ResponseEntity.ok(orderService.findAllByCustomerId(customerId, PageRequest.of(page, pageSize)));
     }
 }

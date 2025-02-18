@@ -5,6 +5,8 @@ import artapp.order_integration.entity.OrderEntity;
 import artapp.order_integration.entity.OrderItem;
 import artapp.order_integration.listener.dto.OrderCreatedEvent;
 import artapp.order_integration.repository.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,10 +21,10 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public List<OrderResponse> findAllByCustomerId(Long customerId) {
-        var orders = orderRepository.findAllByCustomerId(customerId);
+    public Page<OrderResponse> findAllByCustomerId(Long customerId, PageRequest pageRequest) {
+        var orders = orderRepository.findAllByCustomerId(customerId, pageRequest);
 
-        return orders.stream().map(OrderResponse::fromEntity).toList();
+        return orders.map(OrderResponse::fromEntity);
     }
     public void save(OrderCreatedEvent event) {
         OrderEntity entity = new OrderEntity();
