@@ -36,5 +36,13 @@ docker compose up
     }
   ]
 }
+
+```
+
+5 - Executar um request
+
+```
+curl --location 'http://localhost:8080/customers/1/orders?page=0'
+
 ```
 
