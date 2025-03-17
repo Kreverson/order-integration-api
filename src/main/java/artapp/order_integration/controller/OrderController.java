@@ -20,11 +20,6 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<String> index() {
-        return ResponseEntity.ok("Hello World");
-    }
-
     @GetMapping("/{customerId}/orders")
     public ResponseEntity<ApiResponse<OrderResponse>> getAllOrderByCustomer(@PathVariable("customerId") Long customerId,
                                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
