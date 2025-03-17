@@ -1,5 +1,6 @@
 package artapp.order_integration.entity;
 
+import lombok.*;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,6 +13,9 @@ import java.util.List;
 
 @Document(collection = "orders")
 @TypeAlias("orderEntity")
+@Getter
+@Setter
+@NoArgsConstructor
 public class OrderEntity {
 
     @MongoId
@@ -24,46 +28,4 @@ public class OrderEntity {
     private BigDecimal total;
 
     private List<OrderItem> items;
-
-    public OrderEntity() {
-    }
-
-    public OrderEntity(Long orderId, Long customerId, BigDecimal total, List<OrderItem> items) {
-        this.orderId = orderId;
-        this.customerId = customerId;
-        this.total = total;
-        this.items = items;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public List<OrderItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<OrderItem> items) {
-        this.items = items;
-    }
 }
