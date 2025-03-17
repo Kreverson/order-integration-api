@@ -4,6 +4,7 @@ import artapp.order_integration.controller.dto.OrderResponse;
 import artapp.order_integration.entity.OrderEntity;
 import artapp.order_integration.entity.OrderItem;
 import artapp.order_integration.listener.dto.OrderCreatedEvent;
+import artapp.order_integration.mapper.OrderMapper;
 import artapp.order_integration.repository.OrderRepository;
 import org.bson.Document;
 import org.springframework.data.domain.Page;
@@ -47,7 +48,7 @@ public class OrderService {
     public Page<OrderResponse> findAllByCustomerId(Long customerId, PageRequest pageRequest) {
         var orders = orderRepository.findAllByCustomerId(customerId, pageRequest);
 
-        return orders.map(OrderResponse::fromEntity);
+        return orders.map(OrderMapper.INSTANCE::toOrderResponse);
     }
     public void save(OrderCreatedEvent event) {
         OrderEntity entity = new OrderEntity();
