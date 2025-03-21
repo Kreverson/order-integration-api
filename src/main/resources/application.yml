@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: order-integration
+  data:
+    mongodb:
+      authentication-database: admin
+      auto-index-creation: true
+      host: localhost
+      port: '27017'
+      database: orders
+      username: admin
+      password: '123'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+info:
+  app: Micro Service for order integrations
+  website: www.org.com
+  github: www.github.com
